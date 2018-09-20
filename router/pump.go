@@ -9,8 +9,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	"github.com/fsouza/go-dockerclient"
 )
 
 var allowTTY bool
@@ -285,7 +283,7 @@ func (p *LogsPump) update(event *docker.APIEvents) {
 		for r := range p.routes {
 			select {
 			case r <- &update{event, pump}:
-			case <-time.After(time.Second * 1):
+			case <-time.After(time.Second * 600):
 				debug("pump.update(): route timeout, dropping")
 				defer delete(p.routes, r)
 			}
